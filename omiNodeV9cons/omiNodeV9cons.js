@@ -87,7 +87,7 @@ console.log(xmlmsg_omiodf);
 console.log("2*********");
 */
 
-var url_omiNodeV9 = options.path_InfoItem.split("/Objects")[0];
+var url_omiNodeV9 = options.path_InfoItem.split("Objects")[0];
 //console.log(url_omiNodeV9);
 //var xmlmsg='<?xml version="1.0"?><omiEnvelope xmlns="http://www.opengroup.org/xsd/omi/1.0/" version="1.0" ttl="0"><read msgformat="odf"><msg><Objects xmlns="http://www.opengroup.org/xsd/odf/1.0/"><Object><id>Haut_Fourneaux_Site_1</id><Object><id>Kuka_Robots</id><Object><id>KR_6_R700_sixx_WP</id><Object><id>Sensors</id><InfoItem name="Motor_speed"/></Object></Object></Object></Object></Objects></msg></read></omiEnvelope>';
 //http://localhost:8383/IoTLab2/Servlet
@@ -114,14 +114,14 @@ request({
     //.getAttribute("returnCode");
      //console.log(err_odf);
     //var path_check = body_resp.split('Such item/s not found.');
-    
+
     if (err_odf == 400 || err_odf == 404){
       //console.log("8888888888888888888888");
       //xmlmsg_omiodf = '<?xml version="1.0"?><omiEnvelope xmlns="http://www.opengroup.org/xsd/omi/1.0/" version="1.0" ttl="0"><read msgformat="odf"><msg><Objects xmlns="http://www.opengroup.org/xsd/odf/1.0/"><Object><id>Haut_Fourneaux_Site_1</id><Object><id>Kuka_Robots</id><Object><id>KR_6_R700_sixx_WP</id><Object><id>Sensors</id><InfoItem name="Motor_speed"/></Object></Object></Object></Object></Objects></msg></read></omiEnvelope>';
       //console.log(path_check.length);
-      
+
       //------------------Send 2nd request if code error indicating that the InfoItem doesn't exist----------------------//
-      
+
       xmlmsg_odf = createODF_Read(options.path_InfoItem,"Object");
       xmlmsg_omiodf = createOMIODF_Read(options,oper_type,xmlmsg_odf.payload);
 
@@ -141,7 +141,7 @@ request({
 
     //console.log(body_resp);
     var path_check = body_resp.split('Such item/s not found.');
-    
+
     if (path_check.length>1){
       //console.log("-----------------------------------------------------");
     } else{
@@ -161,7 +161,7 @@ request({
 
   }.bind(this));
     }
-    
+
     //--------Catch error of the 1st request if code !=200 (since anyway the error code of the 2nd request will be displayed in the UI)--//
 
     if (err || err_odf != 200) {
@@ -187,7 +187,7 @@ return this;
 
 /*Creation of the O-MI/O-DF message when performing a Write request whose input parameters are contained in:
 @options: all necessary paramters (i.e., Value to be written, TTL...) entered via Node-Red UI
-*/ 
+*/
 omiNodeV9cons.prototype.WriteInfoItem = function (options, callback) {
 
  var xmlmsg_odf = createODF_write(options.path_InfoItem,options.value);
@@ -197,8 +197,8 @@ omiNodeV9cons.prototype.WriteInfoItem = function (options, callback) {
  console.log("6*********");
  console.log(xmlmsg_omiodf);
  console.log("7*********");
-  */ 
- var url_omiNodeV9 = options.path_InfoItem.split("/Objects")[0];
+  */
+ var url_omiNodeV9 = options.path_InfoItem.split("Objects")[0];
 
    //console.log(xmlmsg_odf.err);
    //var xmlmsg='<?xml version="1.0"?><omiEnvelope xmlns="http://www.opengroup.org/xsd/omi/1.0/" version="1.0" ttl="0"><write xmlns="omi.xsd" msgformat="odf"><msg><Objects xmlns="http://www.opengroup.org/xsd/odf/1.0/"><Object><id>Haut_Fourneaux_Site_1</id><Object><id>Kuka_Robots</id><Object><id>KR_6_R700_sixx_WP</id><Object><id>Sensors</id><InfoItem name="Motor_speed"><value unixTime="1473405793" type="xs:string">20000</value></InfoItem></Object></Object></Object></Object></Objects></msg></write></omiEnvelope>';
@@ -234,7 +234,7 @@ omiNodeV9cons.prototype.WriteInfoItem = function (options, callback) {
 
 /*Creation of the O-MI/O-DF message when performing a Cancel request whose input parameters are contained in:
  * @options: all necessary paramters (i.e., reqID, TTL...) entered via Node-Red UI
- */ 
+ */
  omiNodeV9cons.prototype.CancelSubscription = function (options, callback) {
   var xmlmsg_odf = createODF_cancel(options.reqID);
   //console.log(xmlmsg_odf.payload);
@@ -246,7 +246,7 @@ omiNodeV9cons.prototype.WriteInfoItem = function (options, callback) {
   */
    //console.log(xmlmsg_odf.err);
 
-   var url_omiNodeV9 = options.path_InfoItem.split("/Objects")[0];
+   var url_omiNodeV9 = options.path_InfoItem.split("Objects")[0];
    //var xmlmsg='<?xml version="1.0"?><omiEnvelope xmlns="http://www.opengroup.org/xsd/omi/1.0/" version="1.0" ttl="10"><cancel xmlns="omi.xsd"><requestID>2</requestID></cancel></omiEnvelope>';
 
    request({
@@ -323,7 +323,7 @@ function createOMIODF_Read(options,oper_type,ODFpayload) {
   var OpenTag_OMIheader_part2= '><read msgformat="odf"';
   var CloseTag_OMIheader_part2= '><msg><Objects xmlns="http://www.opengroup.org/xsd/odf/1.0/">';
   var CloseTag_OMIfooter='</Objects></msg></read></omiEnvelope>';
-  
+
   var OpenTag_OMIheader=OpenTag_OMIheader_withoutTTL.concat(options.ttl,'"');
 
   if (oper_type=="read1time"){
@@ -361,7 +361,7 @@ function createOMIODF_Read_poll(options,ODFpayload) {
   var OpenTag_OMIheader_withoutTTL= '<?xml version="1.0"?><omiEnvelope xmlns="http://www.opengroup.org/xsd/omi/1.0/" version="1.0" ttl="';
   var OpenTag_OMIheader_part2= '><read>';
   var CloseTag_OMIfooter='</read></omiEnvelope>';
-  
+
   var OpenTag_OMIheader=OpenTag_OMIheader_withoutTTL.concat(options.ttl,'"');
   var OMIODF_msg = OpenTag_OMIheader.concat(OpenTag_OMIheader_part2,ODFpayload,CloseTag_OMIfooter);
 
@@ -406,7 +406,7 @@ console.log("§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§")
 */
   var res_split = path.split("/");
 
-  for (i = 0; i <= res_split.length; i++) { 
+  for (i = 0; i <= res_split.length; i++) {
     if (res_split[i]=="Objects")
       i_Objs=i;
   }
@@ -437,7 +437,7 @@ function createODF_ReadwithMetadata(path) {
 
   var res_split = path.split("/");
 
-  for (i = 0; i <= res_split.length; i++) { 
+  for (i = 0; i <= res_split.length; i++) {
     if (res_split[i]=="Objects")
       i_Objs=i;
   }
@@ -467,7 +467,7 @@ function createODF_write(path,valueInfoItem) {
 
   var res_split = path.split("/");
 
-  for (i = 0; i <= res_split.length; i++) { 
+  for (i = 0; i <= res_split.length; i++) {
     if (res_split[i]=="Objects")
       i_Objs=i;
   }
@@ -497,7 +497,7 @@ function createODF_InfoItemWrite(payload_elem,valueInfoItem_XML) {
   var CloseTagInterm_InfoItem= '">';
   var CloseTag_InfoItem= '</InfoItem>';
   payload_elem = OpenTag_InfoItem.concat(payload_elem,CloseTagInterm_InfoItem,valueInfoItem_XML,CloseTag_InfoItem);
-  
+
   return payload_elem;
 };
 
